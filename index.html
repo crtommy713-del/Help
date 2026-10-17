@@ -22,7 +22,7 @@
       padding: 0;
     }
 
-    /* Fixed Top Navigation Bar - Always visible at top */
+    /* Fixed Top Navigation Bar */
     .app-header {
       width: 100%;
       background-color: #1e1e1e;
@@ -92,14 +92,36 @@
       align-items: center;
     }
 
+    .stats-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .stats-card span {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: #aaa;
     }
 
     .stats-card strong {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #fff;
+    }
+
+    .reset-btn {
+      background-color: #ff3d00;
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .reset-btn:active {
+      background-color: #d50000;
     }
 
     .ad-btn {
@@ -132,6 +154,15 @@
       background-color: #2962ff;
     }
 
+    .ad-btn.tertiary {
+      background-color: #ff9100;
+      color: #121212;
+    }
+
+    .ad-btn.tertiary:active {
+      background-color: #ff6d00;
+    }
+
     .badge {
       display: inline-block;
       background-color: #2a2a2a;
@@ -157,9 +188,13 @@
       <h1>Direct Ad Portal</h1>
       <p>Click any button below to open the ad link with unlimited views.</p>
 
+      <!-- Stats Card with Reset Button -->
       <div class="stats-card">
-        <span>Total Clicks Completed:</span>
-        <strong id="click-counter">0</strong>
+        <div class="stats-info">
+          <span>Total Clicks Completed:</span>
+          <strong id="click-counter">0</strong>
+        </div>
+        <button class="reset-btn" onclick="resetClicks()">↻ Reset</button>
       </div>
 
       <!-- Direct Ad Link #1 -->
@@ -167,9 +202,14 @@
         ⚡ Open Direct Ad Link #1
       </button>
 
-      <!-- Direct Ad Link #2 (Adsterra Smartlink) -->
+      <!-- Direct Ad Link #2 (Adsterra) -->
       <button class="ad-btn secondary" onclick="openAdLink('https://asiafilm.org/4/fa296921a9945242ca7c6ed0b4dabea2')">
         🚀 Open Direct Ad Link #2
+      </button>
+
+      <!-- Direct Ad Link #3 (HilltopAds) -->
+      <button class="ad-btn tertiary" onclick="openAdLink('https://motionless-bus.com/H5GayS')">
+        🔥 Open Direct Ad Link #3
       </button>
     </div>
   </div>
@@ -199,6 +239,15 @@
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       a.click();
+    }
+
+    // Reset local click count to 0
+    function resetClicks() {
+      if (confirm('Are you sure you want to reset your total click count?')) {
+        clickCount = 0;
+        localStorage.setItem('unlimited_ad_clicks', 0);
+        document.getElementById('click-counter').innerText = 0;
+      }
     }
   </script>
 
