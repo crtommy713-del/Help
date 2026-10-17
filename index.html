@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch & Earn / Visit Links</title>
+  <title>Direct Ad Portal</title>
   <style>
     * {
       box-sizing: border-box;
@@ -16,19 +16,57 @@
       background-color: #121212;
       color: #ffffff;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Fixed Top Navigation Bar - Always visible at top */
+    .app-header {
+      width: 100%;
+      background-color: #1e1e1e;
+      border-bottom: 1px solid #333;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .back-nav-btn {
+      background-color: #2a2a2a;
+      color: #00e676;
+      border: 1px solid #00e676;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-nav-btn:active {
+      background-color: #00e676;
+      color: #121212;
+    }
+
+    .main-content {
       padding: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      margin-top: 20px;
     }
 
     .container {
       background-color: #1e1e1e;
       border-radius: 12px;
       padding: 24px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
@@ -68,7 +106,6 @@
       display: block;
       width: 100%;
       padding: 14px;
-      margin-bottom: 12px;
       border: none;
       border-radius: 8px;
       background-color: #00e676;
@@ -85,57 +122,70 @@
       background-color: #00c853;
     }
 
-    .ad-btn.secondary {
-      background-color: #2979ff;
-      color: #ffffff;
-    }
-
-    .ad-btn.secondary:active {
-      background-color: #2962ff;
-    }
-
     .badge {
       display: inline-block;
-      background-color: #333;
+      background-color: #2a2a2a;
       color: #00e676;
       font-size: 0.75rem;
       padding: 4px 8px;
       border-radius: 12px;
-      margin-bottom: 16px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="badge">Infinity Mode Active</div>
-    <h1>Direct Ad Portal</h1>
-    <p>Click the button below to view ads unlimited times with no waiting period.</p>
-
-    <div class="stats-card">
-      <span>Total Clicks Completed:</span>
-      <strong id="click-counter">0</strong>
-    </div>
-
-    <!-- Your active direct ad link -->
-    <button class="ad-btn" onclick="openAdLink('https://uplcm.com/4/12055952')">
-      ⚡ Open Direct Ad Link
+  <!-- Top Navigation Header (Always Visible at Top of Web) -->
+  <header class="app-header">
+    <button class="back-nav-btn" onclick="goBack()">
+      ← Back to App
     </button>
+    <div class="badge">Unlimited Mode</div>
+  </header>
+
+  <div class="main-content">
+    <div class="container">
+      <h1>Direct Ad Portal</h1>
+      <p>Click below to open the link. Use the top back button anytime to return.</p>
+
+      <div class="stats-card">
+        <span>Total Clicks Completed:</span>
+        <strong id="click-counter">0</strong>
+      </div>
+
+      <!-- Direct Ad Link trigger -->
+      <button class="ad-btn" onclick="openAdLink('https://uplcm.com/4/12055952')">
+        ⚡ Open Direct Ad Link
+      </button>
+    </div>
   </div>
 
   <script>
-    // Load click count from local storage
+    // Load local click count
     let clickCount = parseInt(localStorage.getItem('unlimited_ad_clicks')) || 0;
     document.getElementById('click-counter').innerText = clickCount;
 
+    // Back key navigation handler
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback destination if opened directly
+        window.location.href = './index.html'; 
+      }
+    }
+
+    // Open link safely in standard external browser to prevent ERR_UNKNOWN_URL_SCHEME
     function openAdLink(adUrl) {
-      // Increment click count
       clickCount++;
       localStorage.setItem('unlimited_ad_clicks', clickCount);
       document.getElementById('click-counter').innerText = clickCount;
 
-      // Open ad link in a new tab immediately (No cooldown or timer)
-      window.open(adUrl, '_blank');
+      // Opens in external browser tab so Android intents resolve properly
+      const a = document.createElement('a');
+      a.href = adUrl;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.click();
     }
   </script>
 
